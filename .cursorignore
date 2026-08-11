@@ -1,0 +1,11 @@
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+src/assets/iconify-icons/generated-icons.css
+*.log
+.DS_Store
+.env
+.env*.local

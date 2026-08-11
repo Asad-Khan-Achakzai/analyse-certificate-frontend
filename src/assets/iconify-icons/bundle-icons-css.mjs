@@ -21,38 +21,51 @@ const require = createRequire(import.meta.url);
 async function generateIconsCSS() {
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
+    // Only bundle icons actually used in this app.
+    // Do NOT load the full tabler.json set — that produces a multi‑MB CSS file
+    // and can freeze Next/Turbopack + Chrome on first compile.
     const sources = {
         json: [
-            // Iconify JSON file (@iconify/json is a package name, /json/ is directory where files are, then filename)
-            require.resolve('@iconify/json/json/tabler.json'),
-            // Custom file with only few icons
-            /* {
-                filename: require.resolve('@iconify/json/json/line-md.json'),
-                icons: ['home-twotone-alt', 'github', 'document-list', 'document-code', 'image-twotone']
-            } */
-            // Custom JSON file
-            // 'json/gg.json'
+            {
+                filename: require.resolve('@iconify/json/json/tabler.json'),
+                icons: [
+                    'alert-circle',
+                    'alert-triangle',
+                    'alert-triangle-filled',
+                    'arrow-up',
+                    'building',
+                    'certificate',
+                    'check',
+                    'chevron-down',
+                    'chevron-right',
+                    'circle',
+                    'circle-check',
+                    'circle-dot',
+                    'color-picker',
+                    'device-laptop',
+                    'dots-vertical',
+                    'eye',
+                    'eye-off',
+                    'file-type-pdf',
+                    'info-circle',
+                    'logout',
+                    'menu-2',
+                    'moon-stars',
+                    'plus',
+                    'qrcode',
+                    'refresh',
+                    'settings',
+                    'smart-home',
+                    'star',
+                    'star-filled',
+                    'sun',
+                    'trash',
+                    'x'
+                ]
+            }
         ],
-        icons: [
-            'bx-basket',
-            'bi-airplane-engines',
-            'ri-anchor-line',
-            'uit-adobe-alt',
-            // 'fa6-regular-comment',
-            'twemoji-auto-rickshaw'
-        ],
-        svg: [
-        /* {
-          dir: 'src/assets/iconify-icons/svg',
-          monotone: false,
-          prefix: 'custom'
-        } */
-        /* {
-        dir: 'src/assets/iconify-icons/emojis',
-        monotone: false,
-        prefix: 'emoji'
-      } */
-        ]
+        icons: [],
+        svg: []
     };
     // File to save bundle to
     const target = join(__dirname, 'generated-icons.css');

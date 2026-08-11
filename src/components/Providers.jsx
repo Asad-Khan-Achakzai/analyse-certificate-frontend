@@ -9,16 +9,17 @@ import { getMode, getSettingsFromCookie, getSystemMode } from '@core/utils/serve
 
 const Providers = async props => {
   // Props
-  const { children, direction } = props
+  const { children, direction, forcedMode } = props
 
   // Vars
-  const mode = await getMode()
+  const mode = forcedMode || (await getMode())
   const settingsCookie = await getSettingsFromCookie()
-  const systemMode = await getSystemMode()
+  const systemMode = forcedMode || (await getSystemMode())
+  const resolvedSettingsCookie = forcedMode ? { ...settingsCookie, mode: forcedMode } : settingsCookie
 
   return (
     <VerticalNavProvider>
-      <SettingsProvider settingsCookie={settingsCookie} mode={mode}>
+      <SettingsProvider settingsCookie={resolvedSettingsCookie} mode={mode}>
         <ThemeProvider direction={direction} systemMode={systemMode}>
           <AuthClientProvider>{children}</AuthClientProvider>
         </ThemeProvider>

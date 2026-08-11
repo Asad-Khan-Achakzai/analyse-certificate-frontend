@@ -15,11 +15,18 @@ import TableCell from '@mui/material/TableCell'
 import TableHead from '@mui/material/TableHead'
 import TableRow from '@mui/material/TableRow'
 import { api } from '@/lib/api'
+import { useSettings } from '@core/hooks/useSettings'
 
 export default function VerifyCertificate({ publicId }) {
   const [data, setData] = useState(null)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(true)
+  const { updatePageSettings } = useSettings()
+
+  useEffect(() => {
+    return updatePageSettings({ mode: 'light' })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     api
