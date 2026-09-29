@@ -123,6 +123,7 @@ export const api = {
   getStats: () => apiFetch('/certificates/stats'),
   getCertificate: id => apiFetch(`/certificates/${id}`),
   createCertificate: body => apiFetch('/certificates', { method: 'POST', body: JSON.stringify(body) }),
+  cloneCertificate: id => apiFetch(`/certificates/${id}/clone`, { method: 'POST' }),
   updateCertificate: (id, body) =>
     apiFetch(`/certificates/${id}`, { method: 'PATCH', body: JSON.stringify(body) }),
   deleteCertificate: id => apiFetch(`/certificates/${id}`, { method: 'DELETE' }),

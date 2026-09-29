@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Card from '@mui/material/Card'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
@@ -27,6 +28,7 @@ const statusColor = {
 }
 
 export default function CertificateList() {
+  const router = useRouter()
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [search, setSearch] = useState('')
@@ -34,6 +36,7 @@ export default function CertificateList() {
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
   const [busyId, setBusyId] = useState(null)
+  const [cloningId, setCloningId] = useState(null)
 
   const load = () => {
     setLoading(true)
@@ -83,6 +86,25 @@ export default function CertificateList() {
       setError(err.message)
     } finally {
       setBusyId(null)
+    }
+  }
+
+  const clone = async id => {
+    setCloningId(id)
+    setError('')
+    setMessage('')
+    try {
+      const res = await api.cloneCertificate(id)
+      const newId = res.data?._id
+      if (newId) {
+        router.push(`/certificates/${newId}/edit`)
+      } else {
+        setMessage('Certificate cloned')
+        load()
+      }
+    } catch (err) {
+      setError(err.message)
+      setCloningId(null)
     }
   }
 
@@ -208,6 +230,15 @@ export default function CertificateList() {
                               </Button>
                             </>
                           ) : null}
+                          <Button
+                            size='small'
+                            variant='tonal'
+                            color='secondary'
+                            disabled={cloningId === item._id}
+                            onClick={() => clone(item._id)}
+                          >
+                            {cloningId === item._id ? '...' : 'Clone'}
+                          </Button>
                           <Button component={Link} href={`/certificates/${item._id}`} size='small' variant='text'>
                             View
                           </Button>
